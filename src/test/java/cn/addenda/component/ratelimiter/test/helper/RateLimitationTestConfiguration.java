@@ -33,8 +33,9 @@ public class RateLimitationTestConfiguration {
 
   @Bean
   public RRateLimiterDelayedReleaseAllocator rRateLimiterDelayReleasedAllocator(RedissonClient redissonClient) {
-    RRateLimiterDelayedReleaseAllocator rRateLimiterDelayedReleaseAllocator = new RRateLimiterDelayedReleaseAllocator(redissonClient, type, interval, rate, keepAlive, clearHistoricalRateConfig);
-    rRateLimiterDelayedReleaseAllocator.setName("ratelimiter-component-test");
+    RRateLimiterDelayedReleaseAllocator rRateLimiterDelayedReleaseAllocator =
+            new RRateLimiterDelayedReleaseAllocator(redissonClient, type, interval, rate, keepAlive, clearHistoricalRateConfig);
+    rRateLimiterDelayedReleaseAllocator.setName(TestService.RATE_LIMITER_ALLOCATOR_NAME);
     return rRateLimiterDelayedReleaseAllocator;
   }
 

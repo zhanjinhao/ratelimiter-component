@@ -15,14 +15,23 @@ public class GuavaRateLimiterWrapper implements MultiPermitsRateLimiter {
     this.rateLimiter = rateLimiter;
   }
 
+  /**
+   * 突发模式的Guava RateLimiter
+   */
   public GuavaRateLimiterWrapper(double permitsPerSecond) {
     this.rateLimiter = com.google.common.util.concurrent.RateLimiter.create(permitsPerSecond);
   }
 
+  /**
+   * 冷启动模式的Guava RateLimiter
+   */
   public GuavaRateLimiterWrapper(double permitsPerSecond, Duration warmupPeriod) {
     this.rateLimiter = com.google.common.util.concurrent.RateLimiter.create(permitsPerSecond, warmupPeriod);
   }
 
+  /**
+   * 冷启动模式的Guava RateLimiter
+   */
   public GuavaRateLimiterWrapper(double permitsPerSecond, long warmupPeriod, TimeUnit unit) {
     this.rateLimiter = com.google.common.util.concurrent.RateLimiter.create(permitsPerSecond, warmupPeriod, unit);
   }

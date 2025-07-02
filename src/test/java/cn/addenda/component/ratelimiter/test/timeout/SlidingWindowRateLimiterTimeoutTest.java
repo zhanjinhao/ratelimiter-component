@@ -8,7 +8,7 @@ import cn.addenda.component.ratelimiter.SlidingWindowRateLimiter;
  */
 public class SlidingWindowRateLimiterTimeoutTest {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     SlidingWindowRateLimiter slidingWindowRateLimiter = new SlidingWindowRateLimiter(10, 1000, 100, false);
     new RateLimiterTimeoutBaseTest(slidingWindowRateLimiter).test(true);
   }

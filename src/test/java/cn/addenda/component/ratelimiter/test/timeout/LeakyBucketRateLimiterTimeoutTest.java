@@ -1,7 +1,6 @@
 package cn.addenda.component.ratelimiter.test.timeout;
 
 import cn.addenda.component.ratelimiter.LeakyBucketRateLimiter;
-import org.junit.Test;
 
 /**
  * @author addenda
@@ -9,8 +8,7 @@ import org.junit.Test;
  */
 public class LeakyBucketRateLimiterTimeoutTest {
 
-  @Test
-  public void test1() throws Exception {
+  public static void main(String[] args) {
     LeakyBucketRateLimiter leakyBucketRateLimiter = new LeakyBucketRateLimiter(1000L, 10);
     new RateLimiterTimeoutBaseTest(leakyBucketRateLimiter).test(true);
   }

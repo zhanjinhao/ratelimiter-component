@@ -1,7 +1,8 @@
 package cn.addenda.component.ratelimiter.test.tryacquire;
 
-import cn.addenda.component.base.concurrent.SleepUtils;
+import cn.addenda.component.base.util.SleepUtils;
 import cn.addenda.component.ratelimiter.RateLimiter;
+import cn.addenda.component.ratelimiter.test.RateLimiterTestPojo;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -29,17 +30,19 @@ public class RateLimiterBaseTest {
     AtomicLong acquireTimes = new AtomicLong(0L);
     AtomicLong passTimes = new AtomicLong(0L);
     List<Thread> threadList = new ArrayList<>();
-    BlockingQueue<Long> blockingQueue = new LinkedBlockingDeque<>();
+    BlockingQueue<RateLimiterTestPojo> blockingQueue = new LinkedBlockingDeque<>();
     for (int i = 0; i < 100; i++) {
       threadList.add(new Thread(() -> {
 
         SleepUtils.sleep(TimeUnit.SECONDS, 1);
 
         while (true) {
+          long start = System.currentTimeMillis();
           boolean b = rateLimiter.tryAcquire();
+          long end = System.currentTimeMillis();
           acquireTimes.incrementAndGet();
           if (b) {
-            blockingQueue.offer(System.currentTimeMillis());
+            blockingQueue.offer(new RateLimiterTestPojo(start, end, false));
             passTimes.incrementAndGet();
           }
           try {
@@ -53,10 +56,12 @@ public class RateLimiterBaseTest {
 
     if (outputAcquireSuccess) {
       new Thread(() -> {
+        RateLimiterTestPojo pre = null;
         while (true) {
           try {
-            Long take = blockingQueue.take();
-            System.out.println(take);
+            RateLimiterTestPojo take = blockingQueue.take();
+            take.print(pre);
+            pre = take;
           } catch (InterruptedException e) {
 
           }

@@ -1,6 +1,8 @@
 package cn.addenda.component.ratelimiter.test.timeout;
 
-import cn.addenda.component.ratelimiter.TokenBucketRateLimiter;
+import cn.addenda.component.ratelimiter.GuavaRateLimiterWrapper;
+
+import java.time.Duration;
 
 /**
  * @author addenda
@@ -8,9 +10,9 @@ import cn.addenda.component.ratelimiter.TokenBucketRateLimiter;
  */
 public class GuavaRateLimiterTimeoutTest {
 
-  public static void main(String[] args) throws Exception {
-    TokenBucketRateLimiter tokenBucketRateLimiter = new TokenBucketRateLimiter(10, 10);
-    new RateLimiterTimeoutBaseTest(tokenBucketRateLimiter).test(true);
+  public static void main(String[] args) {
+    GuavaRateLimiterWrapper guavaRateLimiterWrapper = new GuavaRateLimiterWrapper(10, Duration.ofSeconds(1));
+    new RateLimiterTimeoutBaseTest(guavaRateLimiterWrapper).test(true);
   }
 
 }

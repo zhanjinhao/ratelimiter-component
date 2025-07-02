@@ -8,7 +8,7 @@ import cn.addenda.component.ratelimiter.SlidingLogRateLimiter;
  */
 public class SlidingLogRateLimiterTimeoutTest {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     SlidingLogRateLimiter slidingLogRateLimiter = new SlidingLogRateLimiter(10, 1000);
     new RateLimiterTimeoutBaseTest(slidingLogRateLimiter).test(true);
   }

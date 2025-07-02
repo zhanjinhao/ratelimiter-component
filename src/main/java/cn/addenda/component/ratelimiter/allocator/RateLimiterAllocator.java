@@ -1,6 +1,6 @@
 package cn.addenda.component.ratelimiter.allocator;
 
-import cn.addenda.component.base.allocator.DelayedReleaseAllocator;
+import cn.addenda.component.concurrency.allocator.DelayedReleaseAllocator;
 import cn.addenda.component.ratelimiter.RateLimiter;
 
 /**

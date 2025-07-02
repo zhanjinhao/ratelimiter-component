@@ -54,6 +54,23 @@ public class RateLimitationHelper extends RateLimitationSupport {
     rateLimit(attr, runnable, arguments);
   }
 
+  /**
+   * 较上一个场景，arguments[0] 是 key，prefix可以指定，spEL可以指定
+   */
+  public <R> R rateLimit(String rateLimiterAllocator, String prefix, String spEL, TSupplier<R> supplier, Object... arguments) {
+    RateLimitationAttr attr = RateLimitationAttr.builder()
+            .rateLimiterAllocator(rateLimiterAllocator)
+            .prefix(prefix).spEL(spEL).build();
+    return rateLimit(attr, supplier, arguments);
+  }
+
+  public void rateLimit(String rateLimiterAllocator, String prefix, String spEL, TRunnable runnable, Object... arguments) {
+    RateLimitationAttr attr = RateLimitationAttr.builder()
+            .rateLimiterAllocator(rateLimiterAllocator)
+            .prefix(prefix).spEL(spEL).build();
+    rateLimit(attr, runnable, arguments);
+  }
+
   public void rateLimit(RateLimitationAttr attr, TRunnable runnable, Object... arguments) {
     rateLimit(attr, FunctionConverter.toTSupplier(runnable), arguments);
   }

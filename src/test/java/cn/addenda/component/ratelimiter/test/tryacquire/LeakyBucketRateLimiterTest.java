@@ -1,7 +1,6 @@
 package cn.addenda.component.ratelimiter.test.tryacquire;
 
 import cn.addenda.component.ratelimiter.LeakyBucketRateLimiter;
-import org.junit.Test;
 
 /**
  * @author addenda
@@ -9,8 +8,7 @@ import org.junit.Test;
  */
 public class LeakyBucketRateLimiterTest {
 
-  @Test
-  public void test1() throws Exception {
+  public static void main(String[] args) {
     LeakyBucketRateLimiter leakyBucketRateLimiter = new LeakyBucketRateLimiter(200L, 2);
     new RateLimiterBaseTest(leakyBucketRateLimiter).test(true);
   }

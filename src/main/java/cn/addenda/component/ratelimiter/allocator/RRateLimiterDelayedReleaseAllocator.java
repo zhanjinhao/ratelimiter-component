@@ -1,7 +1,7 @@
 package cn.addenda.component.ratelimiter.allocator;
 
-import cn.addenda.component.base.allocator.ReferenceCountDelayedReleaseAllocator;
-import cn.addenda.component.base.allocator.factory.ReentrantSegmentLockFactory;
+import cn.addenda.component.concurrency.allocator.ReferenceCountDelayedReleaseAllocator;
+import cn.addenda.component.concurrency.allocator.factory.ReentrantSegmentLockFactory;
 import cn.addenda.component.ratelimiter.RRateLimiterWrapper;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
@@ -52,10 +52,10 @@ public class RRateLimiterDelayedReleaseAllocator
     return new Function<String, RRateLimiterWrapper>() {
       @Override
       public RRateLimiterWrapper apply(String name) {
-        RRateLimiter rateLimiter = redissonClient
-                .getRateLimiter(getFullPrefix() + name);
+        RRateLimiter rateLimiter = redissonClient.getRateLimiter(getRateLimiterName(name));
         boolean b = rateLimiter.trySetRate(type, rate, Duration.ofMillis(interval), Duration.ofMillis(keepAlive));
-        log.info("Create RRateLimiter using args: type[{}], rate[{}], interval[{}], keepAlive[{}]. The result of trySetRate is [{}].", type, rate, interval, keepAlive, b);
+        log.info("Create RRateLimiter[{}] using args: type[{}], rate[{}], interval[{}], keepAlive[{}]. The local keepAlive is [{}]. The result of trySetRate is [{}].",
+                getRateLimiterName(name), type, rate, interval, keepAlive, getDelayReleaseTtl(), b);
         return new RRateLimiterWrapper(rateLimiter);
       }
     };
@@ -64,6 +64,10 @@ public class RRateLimiterDelayedReleaseAllocator
   @Override
   public void setNamespace(String namespace) {
     this.namespace = namespace;
+  }
+
+  private String getRateLimiterName(String name) {
+    return getFullPrefix() + name;
   }
 
   private String getFullPrefix() {

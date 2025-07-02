@@ -29,7 +29,7 @@
       </dependency>
       <dependency>
         <groupId>cn.addenda</groupId>
-        <artifactId>base-component</artifactId>
+        <artifactId>concurrency-component</artifactId>
         <version>2.0-SNAPSHOT</version>
       </dependency>
       <dependency>
@@ -82,7 +82,7 @@
     </dependency>
     <dependency>
       <groupId>cn.addenda</groupId>
-      <artifactId>base-component</artifactId>
+      <artifactId>concurrency-component</artifactId>
     </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>

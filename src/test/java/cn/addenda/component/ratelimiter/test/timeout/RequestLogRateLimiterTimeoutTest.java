@@ -8,7 +8,7 @@ import cn.addenda.component.ratelimiter.RequestLogRateLimiter;
  */
 public class RequestLogRateLimiterTimeoutTest {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     RequestLogRateLimiter requestLogRateLimiter = new RequestLogRateLimiter(10, 1000);
     new RateLimiterTimeoutBaseTest(requestLogRateLimiter).test(true);
   }

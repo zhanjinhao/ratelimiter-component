@@ -1,6 +1,6 @@
 package cn.addenda.component.ratelimiter;
 
-import cn.addenda.component.base.concurrent.SleepUtils;
+import cn.addenda.component.base.util.SleepUtils;
 
 import java.util.concurrent.TimeUnit;
 

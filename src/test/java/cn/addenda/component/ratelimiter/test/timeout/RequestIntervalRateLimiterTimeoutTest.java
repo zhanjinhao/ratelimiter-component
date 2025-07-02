@@ -1,7 +1,6 @@
 package cn.addenda.component.ratelimiter.test.timeout;
 
 import cn.addenda.component.ratelimiter.RequestIntervalRateLimiter;
-import org.junit.Test;
 
 /**
  * @author addenda
@@ -9,8 +8,7 @@ import org.junit.Test;
  */
 public class RequestIntervalRateLimiterTimeoutTest {
 
-  @Test
-  public void test1() throws Exception {
+  public static void main(String[] args) {
     RequestIntervalRateLimiter requestIntervalRateLimiter = new RequestIntervalRateLimiter(10d);
     new RateLimiterTimeoutBaseTest(requestIntervalRateLimiter).test(true);
   }

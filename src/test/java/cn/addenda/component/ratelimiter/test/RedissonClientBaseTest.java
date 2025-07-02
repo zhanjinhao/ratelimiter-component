@@ -13,12 +13,16 @@ import java.util.Properties;
  */
 public class RedissonClientBaseTest {
 
-  public static RedissonClient redissonClient() throws Exception {
+  public static RedissonClient redissonClient() {
     String path = RedissonClientBaseTest.class.getClassLoader()
             .getResource("redis.properties").getPath();
-
     Properties properties = new Properties();
-    properties.load(new FileInputStream(path));
+
+    try {
+      properties.load(new FileInputStream(path));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 
     // 配置
     Config config = new Config();

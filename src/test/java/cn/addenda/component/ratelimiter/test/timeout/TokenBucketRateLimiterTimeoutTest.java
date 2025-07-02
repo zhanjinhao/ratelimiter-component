@@ -8,7 +8,7 @@ import cn.addenda.component.ratelimiter.TokenBucketRateLimiter;
  */
 public class TokenBucketRateLimiterTimeoutTest {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     TokenBucketRateLimiter tokenBucketRateLimiter = new TokenBucketRateLimiter(10, 10);
     new RateLimiterTimeoutBaseTest(tokenBucketRateLimiter).test(true);
   }

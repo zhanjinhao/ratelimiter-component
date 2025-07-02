@@ -1,7 +1,8 @@
 package cn.addenda.component.ratelimiter.test.timeout;
 
-import cn.addenda.component.base.concurrent.SleepUtils;
+import cn.addenda.component.base.util.SleepUtils;
 import cn.addenda.component.ratelimiter.RateLimiter;
+import cn.addenda.component.ratelimiter.test.RateLimiterTestPojo;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -29,8 +30,7 @@ public class RateLimiterTimeoutBaseTest {
     AtomicLong acquireTimes = new AtomicLong(0L);
     AtomicLong passTimes = new AtomicLong(0L);
     List<Thread> threadList = new ArrayList<>();
-    BlockingQueue<String> blockingQueueOut = new LinkedBlockingDeque<>();
-    BlockingQueue<String> blockingQueueErr = new LinkedBlockingDeque<>();
+    BlockingQueue<RateLimiterTestPojo> blockingQueue = new LinkedBlockingDeque<>();
     for (int i = 0; i < 100; i++) {
       threadList.add(new Thread(() -> {
         while (true) {
@@ -40,9 +40,9 @@ public class RateLimiterTimeoutBaseTest {
           acquireTimes.incrementAndGet();
           if (b) {
             if (end - start >= 2000) {
-              blockingQueueErr.offer(start + " -> " + end + " : " + (end - start));
+              blockingQueue.offer(new RateLimiterTestPojo(start, end, true));
             } else {
-              blockingQueueOut.offer(start + " -> " + end + " : " + (end - start));
+              blockingQueue.offer(new RateLimiterTestPojo(start, end, false));
             }
             passTimes.incrementAndGet();
           }
@@ -57,20 +57,12 @@ public class RateLimiterTimeoutBaseTest {
 
     if (outputAcquireSuccess) {
       new Thread(() -> {
+        RateLimiterTestPojo pre = null;
         while (true) {
           try {
-            String take = blockingQueueOut.take();
-            System.out.println(take);
-          } catch (InterruptedException e) {
-
-          }
-        }
-      }).start();
-      new Thread(() -> {
-        while (true) {
-          try {
-            String take = blockingQueueErr.take();
-            System.err.println(take);
+            RateLimiterTestPojo take = blockingQueue.take();
+            take.print(pre);
+            pre = take;
           } catch (InterruptedException e) {
 
           }

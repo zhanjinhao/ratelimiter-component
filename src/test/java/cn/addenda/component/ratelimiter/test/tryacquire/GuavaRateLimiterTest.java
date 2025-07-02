@@ -1,6 +1,6 @@
 package cn.addenda.component.ratelimiter.test.tryacquire;
 
-import cn.addenda.component.base.concurrent.SleepUtils;
+import cn.addenda.component.base.util.SleepUtils;
 import cn.addenda.component.ratelimiter.GuavaRateLimiterWrapper;
 import com.google.common.util.concurrent.RateLimiter;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class GuavaRateLimiterTest {
 
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     GuavaRateLimiterWrapper guavaRateLimiterWrapper = new GuavaRateLimiterWrapper(10, 1, TimeUnit.SECONDS);
     new RateLimiterBaseTest(guavaRateLimiterWrapper).test(true);
   }

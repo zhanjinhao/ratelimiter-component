@@ -1,7 +1,7 @@
 package cn.addenda.component.ratelimiter.allocator;
 
-import cn.addenda.component.base.allocator.ReferenceCountDelayedReleaseAllocator;
-import cn.addenda.component.base.allocator.factory.ReentrantSegmentLockFactory;
+import cn.addenda.component.concurrency.allocator.ReferenceCountDelayedReleaseAllocator;
+import cn.addenda.component.concurrency.allocator.factory.ReentrantSegmentLockFactory;
 import cn.addenda.component.ratelimiter.GuavaRateLimiterWrapper;
 import lombok.ToString;
 

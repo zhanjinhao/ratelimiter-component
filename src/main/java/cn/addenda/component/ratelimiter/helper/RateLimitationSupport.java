@@ -9,10 +9,7 @@ import cn.addenda.component.ratelimiter.allocator.RateLimiterAllocator;
 import cn.addenda.component.spring.context.ValueResolverHelper;
 import cn.addenda.component.spring.util.SpELUtils;
 import lombok.Setter;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.EnvironmentAware;
 import org.springframework.core.env.Environment;
 import org.springframework.util.StringUtils;
@@ -28,7 +25,7 @@ import java.util.stream.Collectors;
  * @since 2023/8/26 23:04
  */
 public class RateLimitationSupport
-        implements ApplicationContextAware, EnvironmentAware, InitializingBean {
+        implements EnvironmentAware, InitializingBean {
 
   /**
    * {@link EnableRateLimitation#namespace()}
@@ -36,11 +33,9 @@ public class RateLimitationSupport
   private String namespace;
 
   @Setter
-  protected String spELArgsName = "spELArgs";
+  protected String spELArgsName = "args";
 
   private Environment environment;
-
-  private ApplicationContext applicationContext;
 
   private final Map<String, RateLimiterAllocator<? extends RateLimiter>> map;
 
@@ -69,6 +64,8 @@ public class RateLimitationSupport
     String key = attr.getPrefix() + ":" + rawKey;
     RateLimiter rateLimiter = allocator.allocate(key);
 
+    boolean ifUnExpectedThrowable = false;
+
     try {
       if (rateLimiter.tryAcquire()) {
         return supplier.get();
@@ -86,8 +83,19 @@ public class RateLimitationSupport
       String rateLimitedMsg = attr.getRateLimitedMsg();
       String msg = ValueResolverHelper.resolveHashPlaceholder(rateLimitedMsg, properties);
       throw new ComponentServiceException(msg);
+    } catch (ComponentServiceException componentServiceException) {
+      throw componentServiceException;
+    } catch (Throwable throwable) {
+      ifUnExpectedThrowable = true;
+      throw throwable;
     } finally {
-      allocator.delayRelease(key);
+      if (ifUnExpectedThrowable) {
+        // 如果在限流器tryAcquire()的时候遇到异常，立即释放限流器
+        // 下一次请求来的时候，再分配新的限流器
+        allocator.release(key);
+      } else {
+        allocator.delayRelease(key);
+      }
     }
   }
 
@@ -118,11 +126,6 @@ public class RateLimitationSupport
   @Override
   public void setEnvironment(Environment environment) {
     this.environment = environment;
-  }
-
-  @Override
-  public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-    this.applicationContext = applicationContext;
   }
 
 }

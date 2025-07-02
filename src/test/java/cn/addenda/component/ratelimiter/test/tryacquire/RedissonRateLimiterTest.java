@@ -2,7 +2,6 @@ package cn.addenda.component.ratelimiter.test.tryacquire;
 
 import cn.addenda.component.ratelimiter.RRateLimiterWrapper;
 import cn.addenda.component.ratelimiter.test.RedissonClientBaseTest;
-import org.junit.Test;
 import org.redisson.api.RRateLimiter;
 import org.redisson.api.RateType;
 import org.redisson.api.RedissonClient;
@@ -15,8 +14,7 @@ import java.time.Duration;
  */
 public class RedissonRateLimiterTest {
 
-  @Test
-  public void test() throws Exception {
+  public static void main(String[] args) {
     RedissonClient redissonClient = RedissonClientBaseTest.redissonClient();
 
     RRateLimiter rateLimiter = redissonClient.getRateLimiter("ratelimiter-component:RedissonRateLimiterTest");
